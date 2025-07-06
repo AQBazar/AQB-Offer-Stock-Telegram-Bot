@@ -473,9 +473,9 @@ async def main() -> None:
 # Menù Bot Telegram ----------------------------------------------------------
     comandi_menu = [
         BotCommand("start", "Avvia il bot"),
-        BotCommand("nuovo_annuncio", "Crea annuncio Stock oggetti"),
+        BotCommand("nuovo_annuncio", "Crea annuncio Stock di oggetti"),
         BotCommand("readme", "Istruzioni preliminari"),
-        BotCommand("cosa_sono_i_bot", "Scopri come usare i bot"),
+        BotCommand("cosa_sono_i_bot", "Come usare i bot di telegram"),
         BotCommand("cancel", "Annulla l'operazione corrente")
     ]
     await application.bot.set_my_commands(comandi_menu)
