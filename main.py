@@ -448,8 +448,7 @@ async def main() -> None:
                                tutorial_fallback)
             ],
         },
-        fallbacks=[CommandHandler('cancel', cancel)],
-        conversation_timeout=300  # Timeout di 5 minuti
+        fallbacks=[CommandHandler('cancel', cancel)]
     )
 
     application.add_handler(CommandHandler("start", start))
