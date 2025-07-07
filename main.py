@@ -36,7 +36,7 @@ TUTORIAL_START, TUTORIAL_STEP_1 = range(6, 8)
 
 
 # /start configurazione comando --------------------------------------------------
-async def start(update: Update, context):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     messaggio_start = f"""Ciao {user.mention_html()}! 👋
 Sono il bot per la creazione annunci Stock di oggetti usati. 
