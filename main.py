@@ -40,23 +40,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     messaggio_start = f"""Ciao {user.mention_html()}! 👋
 Sono il bot per la creazione annunci Stock di oggetti usati. 
-I miei annunci possono aiutarti a trovare la persona interessata ai tuoi oggetti. 
 
-Panoramica dei comandi che puoi usare:
+Ecco i comandi che puoi usare:
 
 ➡️  <b>/nuovo_annuncio</b>
 Inizia la procedura guidata per creare e pubblicare il tuo annuncio.
 
 📖  <b>/readme</b>
-Qui pui vedere quello che ti serve per pubblicare il tuo annuncio.
+Qui pui vedere quello che ti serve sapere prima di pubblicare il tuo annuncio.
 
 ❌  <b>/cancel</b>
-Da usare per annullare la creazione del tuo annuncio.
+Per annullare la creazione del tuo annuncio.
 
 🤖  <b>/cosa_sono_i_bot</b>
 Spiega cosa sono i bot di telegram attraverso un piccolo tutorial.
 
-🆘 Per qualsiasi problema tecnico o dubbio sul funzionamento del bot, puoi scrivere qui https://t.me/c/2351799174/79.
+🆘 Per qualsiasi problema tecnico o dubbio sul funzionamento del bot, puoi scrivere nel <a href="{SUPPORT_TOPIC_URL}">topic di assistenza</a>.
 """
     await update.message.reply_html(messaggio_start)
 # --------------------------------------------------
