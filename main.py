@@ -37,6 +37,7 @@ TUTORIAL_START, TUTORIAL_STEP_1 = range(6, 8)
 # /start configurazione comando --------------------------------------------------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
+    support_topic_url = os.environ.get('SUPPORT_TOPIC_URL')
     messaggio_start = f"""Ciao {user.mention_html()}! 👋
 Sono il bot per la creazione annunci Stock di oggetti usati. 
 
@@ -53,10 +54,18 @@ Per annullare la creazione del tuo annuncio.
 
 🤖  <b>/cosa_sono_i_bot</b>
 Spiega cosa sono i bot di telegram attraverso un piccolo tutorial.
-
-🆘 Per qualsiasi problema tecnico o dubbio sul funzionamento del bot, puoi scrivere nel <a href="{SUPPORT_TOPIC_URL}">topic di assistenza</a>.
 """
-    await update.message.reply_html(messaggio_start)
+        if support_topic_url:
+        messaggio_start += f"""
+---
+🆘 Per qualsiasi problema tecnico o dubbio sul funzionamento del bot, puoi scrivere <a href="{support_topic_url}">qui nel topic di assistenza</a>.
+"""
+    
+    try:
+        await update.message.reply_html(messaggio_start)
+    except Exception as e:
+        logger.error(f"Impossibile inviare il messaggio /start. Errore: {e}.")
+        await update.message.reply_text("Ciao! Si è verificato un errore nel caricare il messaggio di benvenuto. Contatta un amministratore.")
 # --------------------------------------------------
 
 
