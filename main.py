@@ -56,7 +56,7 @@ Per annullare la creazione del tuo annuncio.
 Spiega cosa sono i bot di telegram attraverso un piccolo tutorial.
 """
     if support_topic_url:
-    messaggio_start += f"""
+        messaggio_start += f"""
 ---
 🆘 Per qualsiasi problema tecnico o dubbio sul funzionamento del bot, puoi scrivere <a href="{support_topic_url}">qui nel topic di assistenza</a>.
 """
