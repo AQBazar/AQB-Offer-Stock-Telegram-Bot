@@ -3,12 +3,11 @@ import json
 import os
 import asyncio
 from datetime import datetime, timedelta
-# Import necessari dalla libreria del bot
 from telegram import Update, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto, ReplyKeyboardMarkup, KeyboardButton, BotCommand
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ConversationHandler, CallbackQueryHandler
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, ConversationHandler, CallbackQueryHandler, ContextTypes
 import re
-# Import per il server web AIOHTTP
 from aiohttp import web
+
 
 # Abilita il logging
 logging.basicConfig(
