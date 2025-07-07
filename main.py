@@ -37,13 +37,12 @@ TUTORIAL_START, TUTORIAL_STEP_1 = range(6, 8)
 
 # /start configurazione comando --------------------------------------------------
 async def start(update: Update, context):
-    """Invia un messaggio di benvenuto migliorato."""
     user = update.effective_user
     messaggio_start = f"""Ciao {user.mention_html()}! 👋
 Sono il bot per la creazione annunci Stock di oggetti usati. 
-I miei annunci possono aiutarti a trovare la persona interessata ad i tuoi oggetti, e riuscire così a liberartene in una sola volta! 
+I miei annunci possono aiutarti a trovare la persona interessata ai tuoi oggetti. 
 
-Ecco una panoramica dei comandi che puoi usare:
+Panoramica dei comandi che puoi usare:
 
 ➡️  <b>/nuovo_annuncio</b>
 Inizia la procedura guidata per creare e pubblicare il tuo annuncio.
@@ -57,8 +56,7 @@ Da usare per annullare la creazione del tuo annuncio.
 🤖  <b>/cosa_sono_i_bot</b>
 Spiega cosa sono i bot di telegram attraverso un piccolo tutorial.
 
----
-🆘 Per qualsiasi problema tecnico o dubbio sul funzionamento del bot, puoi scrivere nel <a href="{SUPPORT_TOPIC_URL}">topic di supporto tecnico</a>.
+🆘 Per qualsiasi problema tecnico o dubbio sul funzionamento del bot, puoi scrivere qui https://t.me/c/2351799174/79.
 """
     await update.message.reply_html(messaggio_start)
 # --------------------------------------------------
