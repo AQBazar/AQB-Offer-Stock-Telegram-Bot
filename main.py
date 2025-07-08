@@ -34,7 +34,7 @@ FOTO, TITOLO, DESCRIZIONE, LOCALITA, PREZZO, CONFERMA = range(6)
 TUTORIAL_START, TUTORIAL_STEP_1 = range(6, 8)
 
 
-# ⚪/start configurazione comando ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
+# 🟦/start configurazione comando ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     support_topic_url = os.environ.get('SUPPORT_TOPIC_URL')
@@ -81,7 +81,8 @@ Quando sei pronto, usa il comando /nuovo_annuncio per iniziare!"""
     await update.message.reply_text(testo_readme, parse_mode='HTML')
 
 
-# ⚪/cosa_sono_i_bot ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
+
+# 🟦/cosa_sono_i_bot ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
 async def cosa_sono_i_bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     testo_spiegazione = """🤖 <b>Cosa sono i Bot e come si usano?</b>
 
@@ -101,6 +102,8 @@ Vuoi fare una prova pratica per imparare? Clicca qui sotto!"""
     
     return TUTORIAL_START
 
+
+# 🔹/cosa_sono_i_bot > mini-tutorial ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
 async def start_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Avvia la parte pratica del tutorial, focalizzata sul menu."""
     
@@ -134,7 +137,8 @@ async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def prova_fuori_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Informa l'utente che /prova funziona solo durante il tutorial."""
     await update.message.reply_text("Questo è il comando di prova! Funziona solo se avvii prima il tutorial con /cosa_sono_i_bot.")
-# 🔴 ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣ 
+# 🟧 ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣ 
+
 
 
 # --- Funzioni per la Conversazione 'nuovo_annuncio' ---
@@ -476,8 +480,9 @@ async def main() -> None:
     web_app.router.add_get("/", health_check)
     web_app.router.add_post("/webhook", telegram_webhook_handler)
 
+
     
-# ⚪ menù ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
+# 🟦 menù ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
     comandi_menu = [
         BotCommand("start", "Avvia il bot"),
         BotCommand("readme", "Istruzioni preliminari"),
@@ -487,7 +492,8 @@ async def main() -> None:
         
     ]
     await application.bot.set_my_commands(comandi_menu)
-# 🔴 ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣ 
+# 🟧 ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣ 
+
 
     
     # Imposta l'URL del webhook con i server di Telegram
