@@ -45,7 +45,7 @@ Prima di pubblicare il tuo annuncio di Stock oggetti usati ecco una panoramica d
 Qui trovi tutto quello che devi sapere prima di pubblicare il tuo annuncio.
 
 ➡️  <b>/nuovo_annuncio</b>
-Per iniziare la procedura guidata passo passo della pubblicazione tuo annuncio.
+Per iniziare la procedura guidata passo passo della pubblicazione del tuo annuncio.
 
 ❌  <b>/cancel</b>
 Per annullare la creazione del tuo annuncio.
