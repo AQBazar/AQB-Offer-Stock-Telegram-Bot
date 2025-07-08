@@ -95,10 +95,18 @@ Vuoi fare una prova pratica per imparare? Clicca qui sotto!"""
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     await update.message.reply_text(testo_spiegazione, parse_mode='HTML', reply_markup=reply_markup)
+    
+        # MESSAGGIO DI DEBUG 1
+    logger.info("Bot sta per entrare nello stato TUTORIAL_START.")
+    
     return TUTORIAL_START
 
 async def start_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Avvia la parte pratica del tutorial, focalizzata sul menu."""
+    
+        # MESSAGGIO DI DEBUG 2
+    logger.info("Callback 'start_tutorial' ricevuto, la funzione è stata chiamata correttamente.")
+    
     query = update.callback_query
     await query.answer()
     
