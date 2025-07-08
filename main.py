@@ -446,12 +446,13 @@ async def main() -> None:
         fallbacks=[CommandHandler('cancel', cancel)]
     )
 
+
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("readme", readme))
-    application.add_handler(CommandHandler("cosa_sono_i_bot", cosa_sono_i_bot))
     application.add_handler(annuncio_handler)
     application.add_handler(tutorial_handler) 
     application.add_handler(CallbackQueryHandler(button_callback, pattern=r'^(approve|reject)_\d+$'))
+
 
     # Questo prepara il bot a ricevere aggiornamenti, ma non avvia la ricezione.
     await application.initialize()
