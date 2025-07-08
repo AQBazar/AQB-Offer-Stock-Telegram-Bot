@@ -4,7 +4,7 @@ import os
 import asyncio
 from datetime import datetime, timedelta
 from telegram import Update, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto, ReplyKeyboardMarkup, KeyboardButton, BotCommand
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ConversationHandler, CallbackQueryHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, ConversationHandler, CallbackQueryHandler, ContextTypes, DictPersistence
 import re
 from aiohttp import web
 
@@ -95,21 +95,13 @@ Vuoi fare una prova pratica per imparare? Clicca qui sotto!"""
     keyboard = [[InlineKeyboardButton("▶️ Avvia mini-tutorial", callback_data='start_tutorial')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
-    await update.message.reply_text(testo_spiegazione, parse_mode='HTML', reply_markup=reply_markup)
-    
-        # MESSAGGIO DI DEBUG 1
-    logger.info("Bot sta per entrare nello stato TUTORIAL_START.")
-    
+    await update.message.reply_text(testo_spiegazione, parse_mode='HTML', reply_markup=reply_markup)   
     return TUTORIAL_START
 
 
 # 🔹/cosa_sono_i_bot > mini-tutorial ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
 async def start_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Avvia la parte pratica del tutorial, focalizzata sul menu."""
-    
-        # MESSAGGIO DI DEBUG 2
-    logger.info("Callback 'start_tutorial' ricevuto, la funzione è stata chiamata correttamente.")
-    
+    """Avvia la parte pratica del tutorial, focalizzata sul menu."""    
     query = update.callback_query
     await query.answer()
     
@@ -420,8 +412,11 @@ async def telegram_webhook_handler(request: web.Request) -> web.Response:
 
 async def main() -> None:
     """Configura il bot e avvia il server web."""
-    # Costruisce l'applicazione del bot
-    application = Application.builder().token(TOKEN).build()
+    # Crea un oggetto di persistenza per memorizzare gli stati della conversazione
+    persistence = DictPersistence()
+
+    # Costruisce l'applicazione del bot, aggiungendo la persistenza
+    application = Application.builder().token(TOKEN).persistence(persistence).build()
 
     # --- Registrazione degli handler ---
     annuncio_handler = ConversationHandler(
