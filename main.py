@@ -39,13 +39,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     support_topic_url = os.environ.get('SUPPORT_TOPIC_URL')
     messaggio_start = f"""Ciao {user.mention_html()}! 👋
-Prima di pubblicare il tuo annuncio di Stock oggetti usati fai una panoramica dei comandi che puoi usare. 
+Prima di pubblicare il tuo annuncio di Stock oggetti usati ecco una panoramica dei comandi che puoi usare. 
 
 📖  <b>/readme</b>
-Qui trovi tutto quello che ti devi sapere prima di pubblicare il tuo annuncio.
+Qui trovi tutto quello che devi sapere prima di pubblicare il tuo annuncio.
 
 ➡️  <b>/nuovo_annuncio</b>
-Per iniziare la procedura guidata passo passo per la pubblicazione tuo annuncio.
+Per iniziare la procedura guidata passo passo della pubblicazione tuo annuncio.
 
 ❌  <b>/cancel</b>
 Per annullare la creazione del tuo annuncio.
