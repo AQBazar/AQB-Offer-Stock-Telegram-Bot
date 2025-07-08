@@ -87,7 +87,7 @@ async def cosa_sono_i_bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 Un bot come me è un programma automatico che esegue comandi. Un comando è una parola che inizia con una barra, come <code>/start</code>.
 
-Il modo più semplice per vedere tutti i miei comandi è usare il pulsante <b>'Menu'</b> o l'icona <b>/</b> che trovi in basso nella chat. Si aprirà una lista di tutto ciò che posso fare per te!
+Il modo più semplice per vedere tutti i miei comandi è usare il pulsante <b>'Menu'</b> o digitare l'icona <b>/</b> in basso nella chat. Si aprirà una lista di tutto ciò che posso fare per te!
 
 Vuoi fare una prova pratica per imparare? Clicca qui sotto!"""
     
