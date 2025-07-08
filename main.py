@@ -122,6 +122,10 @@ async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Guida l'utente se sbaglia durante il tutorial."""
     await update.message.reply_text("Ci sei quasi! Prova ad aprire il menu dei comandi con il pulsante in basso e a selezionare /prova dalla lista.")
     return TUTORIAL_STEP_1
+    
+async def prova_fuori_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Informa l'utente che /prova funziona solo durante il tutorial."""
+    await update.message.reply_text("Questo è il comando di prova! Funziona solo se avvii prima il tutorial con /cosa_sono_i_bot.")
 # 🔴 ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣ 
 
 
