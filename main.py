@@ -81,61 +81,48 @@ Quando sei pronto, usa il comando /nuovo_annuncio per iniziare!"""
     await update.message.reply_text(testo_readme, parse_mode='HTML')
 
 
-# --- Funzioni per il Tutorial Interattivo ---
-async def cosa_sono_i_bot(update: Update, context):
-    """Spiega cosa sono i bot e propone un tutorial."""
+# ⚪/cosa_sono_i_bot ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
+async def cosa_sono_i_bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     testo_spiegazione = """🤖 <b>Cosa sono i Bot e come si usano?</b>
 
-Un bot come me è un programma automatico con cui puoi interagire direttamente qui su Telegram. Non sono una persona reale, ma eseguo compiti specifici in base ai comandi che mi dai.
+Un bot come me è un programma automatico che esegue comandi. Un comando è una parola che inizia con una barra, come <code>/start</code>.
 
-<b>Come si usa un comando?</b>
-È semplicissimo! Un comando è una parola che inizia con una barra <b>/</b>, come <code>/start</code>.
+Il modo più semplice per vedere tutti i miei comandi è usare il pulsante <b>'Menu'</b> o l'icona <b>/</b> che trovi in basso nella chat. Si aprirà una lista di tutto ciò che posso fare per te!
 
-Vuoi fare una prova pratica? Clicca qui sotto!"""
-
-    keyboard = [[
-        InlineKeyboardButton("▶️ Avvia mini-tutorial",
-                             callback_data='start_tutorial')
-    ]]
+Vuoi fare una prova pratica per imparare? Clicca qui sotto!"""
+    
+    keyboard = [[InlineKeyboardButton("▶️ Avvia mini-tutorial", callback_data='start_tutorial')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
-
-    await update.message.reply_text(testo_spiegazione,
-                                    parse_mode='HTML',
-                                    reply_markup=reply_markup)
+    
+    await update.message.reply_text(testo_spiegazione, parse_mode='HTML', reply_markup=reply_markup)
     return TUTORIAL_START
 
-
-async def start_tutorial(update: Update, context):
-    """Avvia la parte pratica del tutorial."""
+async def start_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Avvia la parte pratica del tutorial, focalizzata sul menu."""
     query = update.callback_query
     await query.answer()
-
+    
     testo_task = """Perfetto! Mettiamoci alla prova.
 
-Il tuo compito è semplice: <b>invia il comando /prova</b>
+Il tuo compito è semplice:
+1. Apri il <b>Menu</b> dei comandi (usando il pulsante o l'icona <b>/</b>).
+2. Trova e seleziona il comando <b>/prova</b>.
 
-Puoi farlo in due modi:
-1. Scrivendo <code>/prova</code> e premendo invio.
-2. Toccando il testo blu del comando qui sopra (su alcuni dispositivi funziona!)."""
-
+In questo modo imparerai a vedere tutte le mie funzioni senza doverle ricordare a memoria!"""
+    
     await query.edit_message_text(text=testo_task, parse_mode='HTML')
     return TUTORIAL_STEP_1
 
-
-async def tutorial_prova_command(update: Update, context):
+async def tutorial_prova_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Gestisce il successo nel tutorial."""
-    await update.message.reply_text(
-        "🎉 Complimenti, hai usato il comando correttamente! Hai completato il tutorial. Ora sei prontissimo a usare tutti i miei comandi."
-    )
+    await update.message.reply_text("🎉 Fantastico, missione compiuta! Hai imparato a usare il menu dei comandi. Ora sei prontissimo a usare il bot al meglio.")
     return ConversationHandler.END
 
-
-async def tutorial_fallback(update: Update, context):
+async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Guida l'utente se sbaglia durante il tutorial."""
-    await update.message.reply_text(
-        "Ci sei quasi! Ricorda, devi inviare il comando che inizia con la barra: /prova"
-    )
+    await update.message.reply_text("Ci sei quasi! Prova ad aprire il menu dei comandi con il pulsante in basso e a selezionare /prova dalla lista.")
     return TUTORIAL_STEP_1
+# 🔴≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣ 
 
 
 # --- Funzioni per la Conversazione 'nuovo_annuncio' ---
@@ -450,12 +437,10 @@ async def main() -> None:
     tutorial_handler = ConversationHandler(
         entry_points=[CommandHandler("cosa_sono_i_bot", cosa_sono_i_bot)],
         states={
-            TUTORIAL_START:
-            [CallbackQueryHandler(start_tutorial, pattern='^start_tutorial$')],
+            TUTORIAL_START: [CallbackQueryHandler(start_tutorial, pattern='^start_tutorial$')],
             TUTORIAL_STEP_1: [
                 CommandHandler("prova", tutorial_prova_command),
-                MessageHandler(filters.TEXT & ~filters.COMMAND,
-                               tutorial_fallback)
+                MessageHandler(filters.TEXT & ~filters.COMMAND, tutorial_fallback)
             ],
         },
         fallbacks=[CommandHandler('cancel', cancel)]
@@ -463,12 +448,10 @@ async def main() -> None:
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("readme", readme))
+    application.add_handler(CommandHandler("cosa_sono_i_bot", cosa_sono_i_bot))
     application.add_handler(annuncio_handler)
-    application.add_handler(
-        tutorial_handler)  # <-- NUOVO HANDLER PER IL TUTORIAL
-    application.add_handler(
-        CallbackQueryHandler(button_callback,
-                             pattern=r'^(approve|reject)_\d+$'))
+    application.add_handler(tutorial_handler) 
+    application.add_handler(CallbackQueryHandler(button_callback, pattern=r'^(approve|reject)_\d+$'))
 
     # Questo prepara il bot a ricevere aggiornamenti, ma non avvia la ricezione.
     await application.initialize()
