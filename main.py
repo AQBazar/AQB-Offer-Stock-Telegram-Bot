@@ -55,7 +55,7 @@ Se non hai mai usato i bot di telegram ti consigliamo questo semplicissimo tutor
 """
     if support_topic_url:
         messaggio_start += f"""
----
+- - - - - - - - - - - -
 🆘 Per qualsiasi problema tecnico o dubbio sul funzionamento del bot, puoi scrivere <a href="{support_topic_url}">qui nel topic di assistenza</a>.
 """
     
