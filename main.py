@@ -122,7 +122,7 @@ async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Guida l'utente se sbaglia durante il tutorial."""
     await update.message.reply_text("Ci sei quasi! Prova ad aprire il menu dei comandi con il pulsante in basso e a selezionare /prova dalla lista.")
     return TUTORIAL_STEP_1
-# 🔴≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣ 
+# 🔴 ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣ 
 
 
 # --- Funzioni per la Conversazione 'nuovo_annuncio' ---
@@ -463,7 +463,7 @@ async def main() -> None:
     web_app.router.add_post("/webhook", telegram_webhook_handler)
 
     
-# Menù Bot Telegram ----------------------------------------------------------
+# ⚪ menù ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
     comandi_menu = [
         BotCommand("start", "Avvia il bot"),
         BotCommand("readme", "Istruzioni preliminari"),
@@ -473,7 +473,7 @@ async def main() -> None:
         
     ]
     await application.bot.set_my_commands(comandi_menu)
-#----------------------------------------------------------
+# 🔴 ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣ 
 
     
     # Imposta l'URL del webhook con i server di Telegram
