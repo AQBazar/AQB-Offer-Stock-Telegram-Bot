@@ -34,7 +34,7 @@ FOTO, TITOLO, DESCRIZIONE, LOCALITA, PREZZO, CONFERMA = range(6)
 TUTORIAL_START, TUTORIAL_STEP_1 = range(6, 8)
 
 
-# /start configurazione comando --------------------------------------------------
+# ⚪/start configurazione comando ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     support_topic_url = os.environ.get('SUPPORT_TOPIC_URL')
@@ -55,7 +55,7 @@ Se non hai mai usato i bot di telegram ti consigliamo questo semplicissimo tutor
 """
     if support_topic_url:
         messaggio_start += f"""
-- - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - -
 🆘 Per qualsiasi problema tecnico o dubbio sul funzionamento del bot, puoi scrivere <a href="{support_topic_url}">qui nel topic di assistenza</a>.
 """
     
@@ -64,7 +64,7 @@ Se non hai mai usato i bot di telegram ti consigliamo questo semplicissimo tutor
     except Exception as e:
         logger.error(f"Impossibile inviare il messaggio /start. Errore: {e}.")
         await update.message.reply_text("Ciao! Si è verificato un errore nel caricare il messaggio di benvenuto. Contatta un amministratore.")
-# --------------------------------------------------
+# 🔴≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
 
 
 async def readme(update: Update, context):
@@ -483,10 +483,11 @@ async def main() -> None:
 # Menù Bot Telegram ----------------------------------------------------------
     comandi_menu = [
         BotCommand("start", "Avvia il bot"),
-        BotCommand("nuovo_annuncio", "Crea annuncio Stock di oggetti"),
         BotCommand("readme", "Istruzioni preliminari"),
-        BotCommand("cosa_sono_i_bot", "Come usare i bot di telegram"),
-        BotCommand("cancel", "Annulla l'operazione corrente")
+        BotCommand("nuovo_annuncio", "Crea annuncio di Stock oggetti"),
+        BotCommand("cancel", "Annulla la creazione dell'annuncio"),
+        BotCommand("cosa_sono_i_bot", "introduzione ai bot di telegram")
+        
     ]
     await application.bot.set_my_commands(comandi_menu)
 #----------------------------------------------------------
