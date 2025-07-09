@@ -86,11 +86,13 @@ Quando sei pronto, usa il comando /nuovo_annuncio per iniziare!"""
 async def cosa_sono_i_bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     testo_spiegazione = """🤖 <b>Cosa sono i Bot e come si usano?</b>
 
-Un bot come me è un programma automatico che esegue comandi. Un comando è una parola che inizia con una barra, come <code>/start</code>.
+Un bot come me è un programma automatico che esegue comandi. Un comando è avviabile selezionando una parola che inizia con una barra, come <code>/start</code>.
 
-Il modo più semplice per vedere tutti i miei comandi è usare il pulsante <b>'Menu'</b> o digitare l'icona <b>/</b> in basso nella chat. Si aprirà una lista di tutto ciò che posso fare per te!
+Il modo più semplice per vedere tutti i comandi è usare il pulsante <b>'Menu'</b> o digitare l'icona <b>/</b> nella barra di testo. In entrambi i casi si aprirà una lista di tutti i comandi eseguibili.
 
-Vuoi fare una prova pratica per imparare? Clicca qui sotto!"""
+<i>Un piccolo consiglio:</i> a volte potrei impiegare qualche secondo per rispondere. È normale, sto solo elaborando la tua richiesta! 
+
+Vuoi fare una prova pratica? Clicca qui sotto!"""
     
     keyboard = [[InlineKeyboardButton("▶️ Avvia mini-tutorial", callback_data='start_tutorial')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
