@@ -101,12 +101,14 @@ Vuoi fare una prova pratica? Clicca qui sotto!"""
     return TUTORIAL_START
 
 
-# 🔹/cosa_sono_i_bot > mini-tutorial ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
+# 🔹 ≣≣≣≣≣≣≣≣≣≣ /cosa_sono_i_bot > mini-tutorial 
 async def start_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Avvia il tutorial pratico dopo il click sul bottone."""
     query = update.callback_query
     await query.answer()
 
+
+# 🔹 ≣≣≣≣≣≣≣≣≣≣ /cosa_sono_i_bot > mini-tutorial > step 1 
     testo_task = """Perfetto! Iniziamo.
 
 <b>Step 1 di 3: Usare il Menu</b>
@@ -122,8 +124,9 @@ Scrivimi qui sotto il <b>numero totale</b> di comandi che hai contato e invia il
 
 async def ricevi_conteggio_comandi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Verifica il numero di comandi inserito dall'utente."""
-    # Il numero corretto di comandi è 5, come definito nella funzione main().
-    # Usiamo '5' come stringa perché il messaggio dell'utente è testo.
+
+
+# 🔹 ≣≣≣≣≣≣≣≣≣≣ /cosa_sono_i_bot > mini-tutorial > step 2 
     if update.message.text.strip() == '5':
         testo_successo = """Esatto! ✅
 
@@ -138,8 +141,9 @@ Digita e invia il comando /prova"""
         await update.message.reply_text("Numero non corretto. Prova a guardare di nuovo nel menu dei comandi e a contare con più attenzione. Poi inviami solo la cifra.")
         return TUTORIAL_STEP_1_MENU
 
+
+# 🔹 ≣≣≣≣≣≣≣≣≣≣ /cosa_sono_i_bot > mini-tutorial > step 3 
 async def tutorial_prova_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Gestisce il successo nell'invio del comando /prova."""
     testo_finale = """🎉 Fantastico, missione compiuta!
 
 <b>Step 3 di 3: Tornare alla Home</b>
@@ -156,7 +160,7 @@ Sei prontissimo a usare questo bot al meglio!"""
 
 async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Guida l'utente se non esegue l'azione richiesta."""
-    messaggio_guida = "Ci sei quasi! Segui attentamente le istruzioni che ti ho dato nel messaggio precedente. Se vuoi interrompere, usa /cancel."
+    messaggio_guida = "Ci sei quasi! Segui attentamente le istruzioni che ti ho dato nel messaggio precedente."
     await update.message.reply_text(messaggio_guida)
     # Ritorna lo stato corrente per non interrompere il flusso
     return None
