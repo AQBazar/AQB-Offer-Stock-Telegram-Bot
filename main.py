@@ -31,7 +31,7 @@ except (TypeError, ValueError):
 # Stati della conversazione per l'annuncio
 FOTO, TITOLO, DESCRIZIONE, LOCALITA, PREZZO, CONFERMA = range(6)
 # Stati per il tutorial
-TUTORIAL_START, TUTORIAL_STEP_1 = range(6, 8)
+TUTORIAL_START, TUTORIAL_STEP_1_MENU, TUTORIAL_STEP_2_PROVA = range(6, 9)
 
 
 # 🟦/start configurazione comando ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
@@ -101,31 +101,64 @@ Vuoi fare una prova pratica per imparare? Clicca qui sotto!"""
 
 # 🔹/cosa_sono_i_bot > mini-tutorial ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
 async def start_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Avvia la parte pratica del tutorial, focalizzata sul menu."""    
+    """Avvia il tutorial pratico dopo il click sul bottone."""
     query = update.callback_query
     await query.answer()
-    
-    testo_task = """Perfetto! Mettiamoci alla prova.
 
-Il tuo compito è semplice:
-1. Apri il <b>Menu</b> dei comandi (usando il pulsante o l'icona <b>/</b>).
-2. Trova e seleziona il comando <b>/prova</b>.
+    testo_task = """Perfetto! Iniziamo.
 
-In questo modo imparerai a vedere tutte le mie funzioni senza doverle ricordare a memoria!"""
-    
+<b>Step 1 di 3: Usare il Menu</b>
+
+Il tuo primo compito è semplice:
+1. Apri il <b>Menu</b> dei comandi (usando il pulsante blu o l'icona <b>/</b> in basso).
+2. Conta i comandi che vedi nella lista.
+
+Scrivimi qui sotto il <b>numero totale</b> di comandi che hai contato e invia il messaggio."""
+
     await query.edit_message_text(text=testo_task, parse_mode='HTML')
-    return TUTORIAL_STEP_1
+    return TUTORIAL_STEP_1_MENU
+
+async def ricevi_conteggio_comandi(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Verifica il numero di comandi inserito dall'utente."""
+    # Il numero corretto di comandi è 5, come definito nella funzione main().
+    # Usiamo '5' come stringa perché il messaggio dell'utente è testo.
+    if update.message.text.strip() == '5':
+        testo_successo = """Esatto! ✅
+
+<b>Step 2 di 3: Inviare un Comando Manualmente</b>
+
+Hai imparato a consultare il menu. Ora impara a usare un comando che NON è nel menu.
+
+Digita e invia il comando /prova"""
+        await update.message.reply_text(testo_successo, parse_mode='HTML')
+        return TUTORIAL_STEP_2_PROVA
+    else:
+        await update.message.reply_text("Numero non corretto. Prova a guardare di nuovo nel menu dei comandi e a contare con più attenzione. Poi inviami solo la cifra.")
+        return TUTORIAL_STEP_1_MENU
 
 async def tutorial_prova_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Gestisce il successo nel tutorial."""
-    await update.message.reply_text("🎉 Fantastico, missione compiuta! Hai imparato a usare il menu dei comandi. Ora sei prontissimo a usare il bot al meglio.")
+    """Gestisce il successo nell'invio del comando /prova."""
+    testo_finale = """🎉 Fantastico, missione compiuta!
+
+<b>Step 3 di 3: Tornare alla Home</b>
+
+Hai imparato:
+- A usare il <b>Menu</b>.
+- A digitare comandi <b>manualmente</b>.
+
+Ora, per completare l'opera, usa il menu per cliccare sul comando /start e tornare alla schermata principale.
+
+Sei prontissimo a usare questo bot al meglio!"""
+    await update.message.reply_text(testo_finale, parse_mode='HTML')
     return ConversationHandler.END
 
 async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Guida l'utente se sbaglia durante il tutorial."""
-    await update.message.reply_text("Ci sei quasi! Prova ad aprire il menu dei comandi con il pulsante in basso e a selezionare /prova dalla lista.")
-    return TUTORIAL_STEP_1
-    
+    """Guida l'utente se non esegue l'azione richiesta."""
+    messaggio_guida = "Ci sei quasi! Segui attentamente le istruzioni che ti ho dato nel messaggio precedente. Se vuoi interrompere, usa /cancel."
+    await update.message.reply_text(messaggio_guida)
+    # Ritorna lo stato corrente per non interrompere il flusso
+    return None
+
 async def prova_fuori_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Informa l'utente che /prova funziona solo durante il tutorial."""
     await update.message.reply_text("Questo è il comando di prova! Funziona solo se avvii prima il tutorial con /cosa_sono_i_bot.")
@@ -448,19 +481,30 @@ async def main() -> None:
     tutorial_handler = ConversationHandler(
         entry_points=[CommandHandler("cosa_sono_i_bot", cosa_sono_i_bot)],
         states={
-            TUTORIAL_START: [CallbackQueryHandler(start_tutorial, pattern='^start_tutorial$')],
-            TUTORIAL_STEP_1: [
+            TUTORIAL_START: [
+                CallbackQueryHandler(start_tutorial, pattern='^start_tutorial$')
+            ],
+            TUTORIAL_STEP_1_MENU: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, ricevi_conteggio_comandi)
+            ],
+            TUTORIAL_STEP_2_PROVA: [
                 CommandHandler("prova", tutorial_prova_command),
+                # Aggiungiamo un fallback specifico per questo stato
                 MessageHandler(filters.TEXT & ~filters.COMMAND, tutorial_fallback)
             ],
         },
-        fallbacks=[CommandHandler('cancel', cancel)]
+        fallbacks=[
+            CommandHandler('cancel', cancel),
+            # Un fallback generico per comandi non attesi
+            MessageHandler(filters.COMMAND, tutorial_fallback)
+        ],
+        # Rimuove il gestore dopo la fine o la cancellazione
+        per_message=False
     )
 
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("readme", readme))
-
     application.add_handler(annuncio_handler)
     application.add_handler(tutorial_handler) 
     application.add_handler(CallbackQueryHandler(button_callback, pattern=r'^(approve|reject)_\d+$'))
