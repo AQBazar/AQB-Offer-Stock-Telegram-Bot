@@ -156,16 +156,19 @@ async def ricevi_conteggio_comandi(update: Update, context: ContextTypes.DEFAULT
     if update.message.text.strip() == '5':
         testo_successo = """Esatto! ✅
 
-<b>Step 2 di 3: Inviare un Comando Manualmente</b>
+<b>Step 2 di 3: Avviare un Comando Manualmente</b>
 
-Hai imparato a consultare il menu. Ora impara a usare un comando. 
-Per avviare un comando ci possono essere 3 modi: 
-1. Cliccare sul comando direttamente dal menu
-2. Scrivere manualmente il comando nella barra di testo ed inviare il messaggio 
+Hai imparato a consultare il Menu dei comandi. Ora impara ad avviare un comando qualsiasi. 
+
+Ecco i 3 modi per farlo: 
+1. Cliccare sul comando direttamente dal Menu
+2. Scrivere manualmente il comando nella barra di testo ed inviare il messaggio
 3. Cliccare direttamente sul comando che appare a schermo
 
 Cerca di avviare il comando /prova digitandolo a mano oppure cliccandoci sopra. 
-Se riuscirai a lanciarlo correttamente passerai al prossimo ed ultimo step!"""
+Ricorda bene che ogni comando è preceduto dalla barra obliqua <code>/</code>.
+
+Se riuscirai ad avviare correttamente il comando /prova passerai al prossimo ed ultimo step!"""
         await update.message.reply_text(testo_successo, parse_mode='HTML')
         return TUTORIAL_STEP_2_PROVA
     else:
