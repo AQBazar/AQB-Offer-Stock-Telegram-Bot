@@ -72,8 +72,7 @@ Prima volta che usi i bot di telegram ? Ti consigliamo questo semplicissimo tuto
 
 # 🟦 ▓▓▓▒▒▒░░░ /readme
 async def readme(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    testo_readme = 
-"""
+    testo_readme = """
 📖 <b>Tutto quello che devi sapere prima di pubblicare</b>
 
 Per garantire che la community sia un luogo sicuro e trasparente, è fondamentale leggere e comprendere le seguenti sezioni prima di creare un annuncio.
