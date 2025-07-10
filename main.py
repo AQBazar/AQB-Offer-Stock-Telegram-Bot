@@ -69,22 +69,47 @@ Prima volta che usi i bot di telegram ? Ti consigliamo questo semplicissimo tuto
 # 🔴 ▓▓▓▒▒▒░░░
 
 
-async def readme(update: Update, context):
-    """Fornisce una guida su come creare un annuncio."""
-    testo_readme = """Ciao! Ecco cosa ti servirà per creare il tuo annuncio:
 
-1.  <b>Le foto</b> dell'articolo.
-2.  Un <b>titolo</b> accattivante.
-3.  Una <b>descrizione</b> dettagliata.
-4.  La <b>località</b> in cui si trova l'oggetto.
-5.  Il <b>prezzo</b> di vendita.
+# 🟦 ▓▓▓▒▒▒░░░ /readme
+async def readme(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    testo_readme = 
+"""
+📖 <b>Tutto quello che devi sapere prima di pubblicare</b>
 
-Quando sei pronto, usa il comando /nuovo_annuncio per iniziare!"""
+Per garantire che la community sia un luogo sicuro e trasparente, è fondamentale leggere e comprendere le seguenti sezioni prima di creare un annuncio.
+
+- - - - - - - - - - - - - - - - - - - - - -
+
+⚖️ <b>1. Privacy, Questioni Legali e Fiscali</b>
+
+• <b>Privacy:</b> Utilizzando questo bot, accetti la Privacy Policy standard di Telegram. I dati del tuo annuncio (foto, testi, username) saranno visibili pubblicamente nel canale e nel gruppo di moderazione.
+• <b>Responsabilità:</b> Sei l'unico responsabile di ciò che pubblichi. Assicurati di avere il diritto di vendere gli oggetti e che le informazioni che fornisci siano veritiere.
+• <b>Questioni Fiscali:</b> La gestione degli obblighi fiscali derivanti dalle tue vendite è una tua responsabilità personale. AQBazar non fornisce consulenza fiscale.
+
+- - - - - - - - - - - - - - - - - - - - - -
+
+📝 <b>2. Cosa Inserire nel Tuo Annuncio</b>
+
+Per un annuncio efficace, prepara:
+1.  <b>Foto chiare:</b> Una foto d'insieme e foto dei dettagli più importanti.
+2.  <b>Un titolo descrittivo:</b> Es. "Lotto di 20 libri di fantascienza" invece di "Vendo libri".
+3.  <b>Una descrizione onesta:</b> Specifica le condizioni degli oggetti, eventuali difetti e cosa è incluso nel lotto.
+4.  <b>La località:</b> La città o la zona dove si trovano gli oggetti.
+5.  <b>Il prezzo:</b> Un prezzo unico per l'intero lotto.
+
+- - - - - - - - - - - - - - - - - - - - - -
+
+✅ Ora che hai letto tutto, sei pronto!
+
+Usa il comando /nuovo_annuncio per iniziare.
+"""
     await update.message.reply_text(testo_readme, parse_mode='HTML')
+    context.user_data['has_read_readme'] = True
+# 🟧  ▓▓▓▒▒▒░░░ 
 
 
 
-# 🟦/cosa_sono_i_bot ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
+# 🟦 ▓▓▓▒▒▒░░░ /cosa_sono_i_bot
 async def cosa_sono_i_bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     testo_spiegazione = """🤖 <b>Cosa sono i Bot e come si usano?</b>
 
@@ -181,13 +206,20 @@ async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def prova_fuori_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Informa l'utente che /prova funziona solo durante il tutorial."""
     await update.message.reply_text("Questo è il comando di prova! Funziona solo se avvii prima il tutorial con /cosa_sono_i_bot.")
-# 🟧  ▓▓▓▒▒▒░░░ 
+# 🟧 ▓▓▓▒▒▒░░░ 
 
 
 
-# --- Funzioni per la Conversazione 'nuovo_annuncio' ---
-async def nuovo_annuncio(update: Update, context):
-    """Inizia la conversazione per un nuovo annuncio."""
+# 🟦 ▓▓▓▒▒▒░░░ /nuovo_annuncio
+async def nuovo_annuncio(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not context.user_data.get('has_read_readme', False):
+        await update.message.reply_text(
+            "❗️ Prima di poter creare un annuncio, è obbligatorio leggere le nostre linee guida.\n\n"
+            "Per favore, usa il comando /readme per visualizzarle.",
+            parse_mode='HTML'
+        )
+        return ConversationHandler.END # Interrompe la creazione dell'annuncio
+
     await update.message.reply_text(
         "<b>1  Carica le Foto</b>\n\n"
         "Allega una o più foto del tuo articolo \n\n"
@@ -198,7 +230,6 @@ async def nuovo_annuncio(update: Update, context):
         parse_mode='HTML')
     context.user_data['photos'] = []
     return FOTO
-
 
 async def ricevi_foto(update: Update, context):
     if update.message.photo:
@@ -353,6 +384,8 @@ async def conferma_annuncio(update: Update, context):
     else:
         await update.message.reply_text("Per favora, rispondi 'Si' o 'No'.")
         return CONFERMA
+# 🟧  ▓▓▓▒▒▒░░░ 
+
 
 
 async def cancel(update: Update, context):
