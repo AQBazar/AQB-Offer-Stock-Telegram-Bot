@@ -175,8 +175,7 @@ Se riuscirai a lanciarlo correttamente passerai al prossimo ed ultimo step!"""
 
 # 🔹 ▓▓▓▒▒▒░░░ /cosa_sono_i_bot > mini-tutorial > step 3 
 async def tutorial_prova_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    testo_finale = 
-"""
+    testo_finale = """
 🎉 Fantastico, missione compiuta!
 
 <b>Step 3 di 3: Tornare alla Home</b>
