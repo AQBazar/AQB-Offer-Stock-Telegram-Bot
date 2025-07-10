@@ -554,14 +554,18 @@ async def main() -> None:
                 CommandHandler("prova", tutorial_prova_command),
                 MessageHandler(filters.TEXT & ~filters.COMMAND, tutorial_fallback)
             ],
+            # NUOVO STATO FINALE
+            TUTORIAL_STEP_3_START: [
+                CommandHandler("start", tutorial_finish_and_start),
+                MessageHandler(filters.TEXT | filters.COMMAND, nudge_to_start)
+            ]
         },
         fallbacks=[
-            CommandHandler('cancel', cancel),
-            MessageHandler(filters.COMMAND, tutorial_fallback)
+            CommandHandler('cancel', cancel)
         ],
         per_message=False,
         allow_reentry=True,
-        conversation_timeout=1800 # Scadenza dopo 30 minuti (1800 secondi)
+        conversation_timeout=1600
     )
 
     application.add_handler(CommandHandler("start", start))
