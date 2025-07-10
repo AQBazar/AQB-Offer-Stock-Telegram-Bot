@@ -31,7 +31,7 @@ except (TypeError, ValueError):
 # Stati della conversazione per l'annuncio
 FOTO, TITOLO, DESCRIZIONE, LOCALITA, PREZZO, CONFERMA = range(6)
 # Stati per il tutorial
-TUTORIAL_START, TUTORIAL_STEP_1_MENU, TUTORIAL_STEP_2_PROVA = range(6, 9)
+TUTORIAL_START, TUTORIAL_STEP_1_MENU, TUTORIAL_STEP_2_PROVA, TUTORIAL_STEP_3_START = range(6, 10)
 
 
 # 🟦 ▓▓▓▒▒▒░░░ /start configurazione comando
@@ -192,9 +192,8 @@ Per completare l'opera, avvia il comando <code>/start</code> e torna alla scherm
 
 Ci vediamo negli altri comandi!
 """
-
     await update.message.reply_text(testo_finale, parse_mode='HTML')
-    return ConversationHandler.END
+    return TUTORIAL_STEP_3_START
 
 async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Guida l'utente se non esegue l'azione richiesta."""
@@ -206,6 +205,18 @@ async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def prova_fuori_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Informa l'utente che /prova funziona solo durante il tutorial."""
     await update.message.reply_text("Questo è il comando di prova! Funziona solo se avvii prima il tutorial con /cosa_sono_i_bot.")
+
+async def tutorial_finish_and_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Conferma il completamento del tutorial e inoltra al vero comando /start."""
+    await update.message.reply_text("✅ Perfetto! Tutorial completato con successo.")
+    # Chiama la funzione originale /start per mostrare il menu principale
+    await start(update, context)
+    return ConversationHandler.END
+
+async def nudge_to_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Guida l'utente a usare /start se compie un'azione non prevista."""
+    await update.message.reply_text("Ci sei quasi! Per finire il tutorial, devi solo lanciare il comando /start.")
+    return TUTORIAL_STEP_3_START # Rimane nello stesso stato di attesa    
 # 🟧 ▓▓▓▒▒▒░░░ 
 
 
