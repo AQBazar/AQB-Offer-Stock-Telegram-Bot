@@ -88,7 +88,7 @@ async def cosa_sono_i_bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 Un bot come me è un programma automatico che esegue comandi. Un comando è avviabile selezionando una parola che inizia con una barra, come <code>/start</code>.
 
-Il modo più semplice per vedere tutti i comandi è usare il pulsante <b>'Menu'</b> o digitare l'icona <b>/</b> nella barra di testo. In entrambi i casi si aprirà una lista di tutti i comandi eseguibili.
+Solo i comandi registrati nel bot possono essere eseguiti. Il modo più semplice per vederli tutti è usare il pulsante <b>'Menu'</b> o digitare l'icona <b>/</b> nella barra di testo. In entrambi i casi si aprirà una lista di tutti i comandi eseguibili.
 
 <i>Un piccolo consiglio:</i> a volte potrei impiegare qualche secondo per rispondere. È normale, sto solo elaborando la tua richiesta! 
 
@@ -132,9 +132,14 @@ async def ricevi_conteggio_comandi(update: Update, context: ContextTypes.DEFAULT
 
 <b>Step 2 di 3: Inviare un Comando Manualmente</b>
 
-Hai imparato a consultare il menu. Ora impara a usare un comando che NON è nel menu.
+Hai imparato a consultare il menu. Ora impara a usare un comando. 
+Per avviare un comando ci possono essere 3 modi: 
+1. Cliccare sul comando direttamente dal menu
+2. Scrivere manualmente il comando nella barra di testo ed inviare il messaggio 
+3. Cliccare direttamente sul comando che appare a schermo
 
-Digita e invia il comando /prova"""
+Cerca di avviare il comando /prova digitandolo a mano oppure cliccandoci sopra. 
+Se riuscirai a lanciarlo correttamente passerai al prossimo ed ultimo step!"""
         await update.message.reply_text(testo_successo, parse_mode='HTML')
         return TUTORIAL_STEP_2_PROVA
     else:
@@ -144,17 +149,23 @@ Digita e invia il comando /prova"""
 
 # 🔹 ≣≣≣≣≣≣≣≣≣≣ /cosa_sono_i_bot > mini-tutorial > step 3 
 async def tutorial_prova_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    testo_finale = """🎉 Fantastico, missione compiuta!
+    testo_finale = 
+"""
+🎉 Fantastico, missione compiuta!
 
 <b>Step 3 di 3: Tornare alla Home</b>
 
-Hai imparato:
-- A usare il <b>Menu</b>.
-- A digitare comandi <b>manualmente</b>.
+Hai imparato a:
+- Usare il Menu
+- Avviare comandi a schermo
+- Digitare comandi manualmente
 
-Ora, per completare l'opera, usa il menu per cliccare sul comando /start e tornare alla schermata principale.
+Sei quasi prontissimo a usare questo bot al meglio!
+Per completare l'opera, usa il menu per cliccare sul comando /start e tornare alla schermata principale.
 
-Sei prontissimo a usare questo bot al meglio!"""
+Ci vediamo negli altri comandi!
+"""
+
     await update.message.reply_text(testo_finale, parse_mode='HTML')
     return ConversationHandler.END
 
