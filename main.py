@@ -34,12 +34,14 @@ FOTO, TITOLO, DESCRIZIONE, LOCALITA, PREZZO, CONFERMA = range(6)
 TUTORIAL_START, TUTORIAL_STEP_1_MENU, TUTORIAL_STEP_2_PROVA = range(6, 9)
 
 
-# 🟦/start configurazione comando ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
+# 🟦 ▓▓▓▒▒▒░░░ /start configurazione comando
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     support_topic_url = os.environ.get('SUPPORT_TOPIC_URL')
     messaggio_start = f"""Ciao {user.mention_html()}! 👋
-Prima di pubblicare il tuo annuncio di Stock oggetti usati ecco una panoramica dei comandi che puoi usare. 
+Ecco una panoramica di tutti i comandi che puoi usare. 
+
+Prima di pubblicare il tuo annuncio di Stock oggetti usati ricorda di leggere /readme. 
 
 📖  <b>/readme</b>
 Qui trovi tutto quello che devi sapere prima di pubblicare il tuo annuncio.
@@ -51,7 +53,7 @@ Per iniziare la procedura guidata passo passo della pubblicazione del tuo annunc
 Per annullare la creazione del tuo annuncio.
 
 🤖  <b>/cosa_sono_i_bot</b>
-Se non hai mai usato i bot di telegram ti consigliamo questo semplicissimo tutorial.
+Prima volta che usi i bot di telegram ? Ti consigliamo questo semplicissimo tutorial.
 """
     if support_topic_url:
         messaggio_start += f"""
@@ -64,7 +66,7 @@ Se non hai mai usato i bot di telegram ti consigliamo questo semplicissimo tutor
     except Exception as e:
         logger.error(f"Impossibile inviare il messaggio /start. Errore: {e}.")
         await update.message.reply_text("Ciao! Si è verificato un errore nel caricare il messaggio di benvenuto. Contatta un amministratore.")
-# 🔴≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣
+# 🔴 ▓▓▓▒▒▒░░░
 
 
 async def readme(update: Update, context):
@@ -101,14 +103,14 @@ Vuoi fare una prova pratica? Clicca qui sotto!"""
     return TUTORIAL_START
 
 
-# 🔹 ≣≣≣≣≣≣≣≣≣≣ /cosa_sono_i_bot > mini-tutorial 
+# 🔹 ▓▓▓▒▒▒░░░ /cosa_sono_i_bot > mini-tutorial 
 async def start_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Avvia il tutorial pratico dopo il click sul bottone."""
     query = update.callback_query
     await query.answer()
 
 
-# 🔹 ≣≣≣≣≣≣≣≣≣≣ /cosa_sono_i_bot > mini-tutorial > step 1 
+# 🔹 ▓▓▓▒▒▒░░░ /cosa_sono_i_bot > mini-tutorial > step 1 
     testo_task = """Perfetto! Iniziamo.
 
 <b>Step 1 di 3: Usare il Menu</b>
@@ -126,7 +128,7 @@ async def ricevi_conteggio_comandi(update: Update, context: ContextTypes.DEFAULT
     """Verifica il numero di comandi inserito dall'utente."""
 
 
-# 🔹 ≣≣≣≣≣≣≣≣≣≣ /cosa_sono_i_bot > mini-tutorial > step 2 
+# 🔹 ▓▓▓▒▒▒░░░ /cosa_sono_i_bot > mini-tutorial > step 2 
     if update.message.text.strip() == '5':
         testo_successo = """Esatto! ✅
 
@@ -147,7 +149,7 @@ Se riuscirai a lanciarlo correttamente passerai al prossimo ed ultimo step!"""
         return TUTORIAL_STEP_1_MENU
 
 
-# 🔹 ≣≣≣≣≣≣≣≣≣≣ /cosa_sono_i_bot > mini-tutorial > step 3 
+# 🔹 ▓▓▓▒▒▒░░░ /cosa_sono_i_bot > mini-tutorial > step 3 
 async def tutorial_prova_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     testo_finale = 
 """
@@ -179,7 +181,7 @@ async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def prova_fuori_tutorial(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Informa l'utente che /prova funziona solo durante il tutorial."""
     await update.message.reply_text("Questo è il comando di prova! Funziona solo se avvii prima il tutorial con /cosa_sono_i_bot.")
-# 🟧 ≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣ 
+# 🟧  ▓▓▓▒▒▒░░░ 
 
 
 
