@@ -541,19 +541,17 @@ async def main() -> None:
             ],
             TUTORIAL_STEP_2_PROVA: [
                 CommandHandler("prova", tutorial_prova_command),
-                # Aggiungiamo un fallback specifico per questo stato
                 MessageHandler(filters.TEXT & ~filters.COMMAND, tutorial_fallback)
             ],
         },
         fallbacks=[
             CommandHandler('cancel', cancel),
-            # Un fallback generico per comandi non attesi
             MessageHandler(filters.COMMAND, tutorial_fallback)
         ],
-        # Rimuove il gestore dopo la fine o la cancellazione
-        per_message=False
+        per_message=False,
+        allow_reentry=True,
+        conversation_timeout=1800 # Scadenza dopo 30 minuti (1800 secondi)
     )
-
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("readme", readme))
