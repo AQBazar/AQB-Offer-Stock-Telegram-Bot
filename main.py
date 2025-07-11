@@ -158,15 +158,17 @@ async def ricevi_conteggio_comandi(update: Update, context: ContextTypes.DEFAULT
 
 <b>Step 2 di 3: Avviare un Comando Manualmente</b>
 
-Hai imparato a consultare il Menu dei comandi. Ora impara ad avviare un comando qualsiasi. 
+Hai imparato a consultare il Menu dei comandi. Ora vedremo come avviarli. 
 
-Ecco i 3 modi per farlo: 
-1. Cliccare sul comando direttamente dal Menu
-2. Scrivere manualmente il comando nella barra di testo ed inviare il messaggio
-3. Cliccare direttamente sul comando che appare a schermo
+Esistono vari modi per avviare un comando. In questo step ci concetreremo su questi due:  
+1. Scrivere manualmente il comando nella barra di testo ed inviare il messaggio
+2. Cliccare direttamente il comando che appare scritto su un messaggio
 
-Cerca di avviare il comando /prova digitandolo a mano oppure cliccandoci sopra. 
-Ricorda bene che ogni comando è preceduto dalla barra obliqua <code>/</code>.
+Cerca di avviare il comando <code>/prova</code> digitandolo a mano oppure cliccandoci sopra. 
+Ogni comando è preceduto dalla barra obliqua <code>/</code>. Per poterlo avviare cliccandoci sopra verifica che sia colorato come in questo caso: 
+/prova
+
+Come vedi in ques'altro caso <code>/prova</code> non si avvia. 
 """
         await update.message.reply_text(testo_successo, parse_mode='HTML')
         return TUTORIAL_STEP_2_PROVA
