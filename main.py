@@ -179,28 +179,19 @@ Come vedi in ques'altro caso <code>/prova</code> non si avvia.
 
 # 🔹 ▓▓▓▒▒▒░░░ /cosa_sono_i_bot > mini-tutorial > step 3 
 async def tutorial_prova_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    testo_finale = """
-🎉 Fantastico, missione compiuta!
-
-<b>Step 3 di 3: Tornare alla Home</b>
+    """Gestisce il successo nell'invio del comando /prova e conclude il tutorial."""
+    testo_finale = """🎉 Fantastico, missione compiuta!
 
 Hai imparato a:
-- Usare il Menu
-- Avviare comandi a schermo
-- Digitare comandi manualmente
+- Usare il <b>Menu</b>.
+- Avviare comandi a schermo.
+- Digitare comandi <b>manualmente</b>.
 
-Sei quasi pronto a usare questo bot al meglio!
-Per completare l'opera, avvia il comando <code>/start</code> selezionandolo dal Menu oppure dalla lista di comandi che appare digitando sulla barra di testo la barra obliqua /.
-
-Ci vediamo negli altri comandi!
-"""
-   
+Il tutorial è terminato. Ora sei libero di usare tutti gli altri comandi. Ti consiglio di iniziare con /readme """
+    
     await update.message.reply_text(testo_finale, parse_mode='HTML')
     
-    # Chiama la funzione start() per mostrare il menu di benvenuto
-    await start(update, context)
-    
-    # Termina la conversazione del tutorial
+    # Termina la conversazione del tutorial in modo pulito, senza lanciare altri comandi.
     return ConversationHandler.END
 
 async def tutorial_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE):
