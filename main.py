@@ -29,7 +29,7 @@ except (TypeError, ValueError):
     raise ValueError("Errore: Assicurati che le variabili d'ambiente GROUP_CHAT_ID, TOPIC_MESSAGE_THREAD_ID, e MODERATION_CHAT_ID siano impostate e siano numeri interi.")
 
 # Stati della conversazione per l'annuncio
-FOTO, TITOLO, DESCRIZIONE, LOCALITA, PREZZO, CONFERMA = range(6)
+ACCETTAZIONE_README, FOTO, TITOLO, DESCRIZIONE, LOCALITA, PREZZO, CONFERMA = range(7)
 # Stati per il tutorial
 TUTORIAL_START, TUTORIAL_STEP_1_MENU, TUTORIAL_STEP_2_PROVA = range(6, 9)
 
@@ -91,7 +91,7 @@ Per garantire che la community sia un luogo sicuro e trasparente, è fondamental
 
 Per un annuncio efficace, prepara:
 1.  <b>Foto chiare:</b> Una foto d'insieme e foto dei dettagli più importanti.
-2.  <b>Un titolo descrittivo:</b> Es. "Lotto di 20 libri di fantascienza" invece di "Vendo libri".
+2.  <b>Un titolo descrittivo:</b> Es. "Stock di 20 libri di fantascienza" invece di "Vendo libri".
 3.  <b>Una descrizione onesta:</b> Specifica le condizioni degli oggetti, eventuali difetti e cosa è incluso nel lotto.
 4.  <b>La località:</b> La città o la zona dove si trovano gli oggetti.
 5.  <b>Il prezzo:</b> Un prezzo unico per l'intero lotto.
@@ -211,24 +211,50 @@ async def prova_fuori_tutorial(update: Update, context: ContextTypes.DEFAULT_TYP
 
 # 🟦 ▓▓▓▒▒▒░░░ /nuovo_annuncio
 async def nuovo_annuncio(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not context.user_data.get('has_read_readme', False):
-        await update.message.reply_text(
-            "❗️ Prima di poter creare un annuncio, è obbligatorio leggere le nostre linee guida.\n\n"
-            "Per favore, usa il comando /readme per visualizzarle.",
-            parse_mode='HTML'
-        )
-        return ConversationHandler.END # Interrompe la creazione dell'annuncio
+    """Mostra il disclaimer e il pulsante di accettazione prima di creare un annuncio."""
+    testo_dichiarazione = """
+Prima di iniziare, per favore, conferma di aver letto e compreso le nostre linee guida.
 
-    await update.message.reply_text(
+La tua responsabilità è fondamentale per mantenere la community un luogo affidabile.
+"""
+    keyboard = [
+        [InlineKeyboardButton("✅ Dichiaro di aver letto il /readme", callback_data="accetta_readme")],
+        [InlineKeyboardButton("📖 Leggi o rileggi il /readme ora", callback_data="leggi_readme")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await update.message.reply_text(testo_dichiarazione, reply_markup=reply_markup)
+    
+    return ACCETTAZIONE_README
+
+async def accetta_readme(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """L'utente ha spuntato la dichiarazione. Avvia il processo di creazione annuncio."""
+    query = update.callback_query
+    await query.answer()
+
+    await query.edit_message_text(text="Perfetto, grazie per la conferma! Iniziamo.")
+    
+    # Ora avviamo il processo vero e proprio, partendo dalle foto
+    await query.message.reply_text(
         "<b>1  Carica le Foto</b>\n\n"
         "Allega una o più foto del tuo articolo \n\n"
         "<i>💡 Consigli: </i>\n"
         "<i>- Cerca di usare sfondi neutri</i>\n"
         "<i>- Allega una foto che mostri tutti gli oggetti </i>\n"
         "<i>- Usa foto di dettaglio per mostrare lo stato </i>\n",
-        parse_mode='HTML')
+        parse_mode='HTML'
+    )
     context.user_data['photos'] = []
     return FOTO
+
+async def mostra_readme_da_accettazione(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Mostra il readme quando richiesto dal pulsante e non prosegue la conversazione."""
+    query = update.callback_query
+    await query.answer()
+    await readme(update, context) # Chiama la funzione /readme esistente
+    # Non ritorna un nuovo stato per non proseguire la conversazione dell'annuncio
+    return
+    
 
 async def ricevi_foto(update: Update, context):
     if update.message.photo:
@@ -506,27 +532,32 @@ async def main() -> None:
     annuncio_handler = ConversationHandler(
         entry_points=[CommandHandler('nuovo_annuncio', nuovo_annuncio)],
         states={
+            ACCETTAZIONE_README: [
+                CallbackQueryHandler(accetta_readme, pattern='^accetta_readme$'),
+                CallbackQueryHandler(mostra_readme_da_accettazione, pattern='^leggi_readme$')
+            ],
             FOTO: [
                 MessageHandler(filters.PHOTO, ricevi_foto),
-                MessageHandler(filters.TEXT & filters.Regex('^✅ Fatto$'),
-                               foto_fatto),
+                MessageHandler(filters.TEXT & filters.Regex('^✅ Fatto$'), foto_fatto),
             ],
-            TITOLO:
-            [MessageHandler(filters.TEXT & ~filters.COMMAND, ricevi_titolo)],
+            TITOLO: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, ricevi_titolo)
+            ],
             DESCRIZIONE: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND,
-                               ricevi_descrizione)
+                MessageHandler(filters.TEXT & ~filters.COMMAND, ricevi_descrizione)
             ],
-            LOCALITA:
-            [MessageHandler(filters.TEXT & ~filters.COMMAND, ricevi_localita)],
-            PREZZO:
-            [MessageHandler(filters.TEXT & ~filters.COMMAND, ricevi_prezzo)],
+            LOCALITA: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, ricevi_localita)
+            ],
+            PREZZO: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, ricevi_prezzo)
+            ],
             CONFERMA: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND,
-                               conferma_annuncio)
+                MessageHandler(filters.TEXT & ~filters.COMMAND, conferma_annuncio)
             ],
         },
         fallbacks=[CommandHandler('cancel', cancel)],
+        per_message=False
     )
 
     tutorial_handler = ConversationHandler(
