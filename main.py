@@ -190,7 +190,7 @@ Hai imparato a:
 - Digitare comandi manualmente
 
 Sei quasi pronto a usare questo bot al meglio!
-Per completare l'opera, avvia il comando <code>/start</code> e torna alla schermata principale.
+Per completare l'opera, avvia il comando <code>/start</code> selezionandolo dal Menu oppure dalla lista di comandi che appare digitando sulla barra di testo la barra obliqua /.
 
 Ci vediamo negli altri comandi!
 """
