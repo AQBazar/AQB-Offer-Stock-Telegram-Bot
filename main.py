@@ -72,6 +72,7 @@ Prima volta che usi i bot di telegram ? Ti consigliamo questo semplicissimo tuto
 
 # 🟦 ▓▓▓▒▒▒░░░ /readme
 async def readme(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Fornisce le informazioni essenziali e imposta il flag di lettura."""
     testo_readme = """
 📖 <b>Tutto quello che devi sapere prima di pubblicare</b>
 
@@ -91,7 +92,7 @@ Per garantire che la community sia un luogo sicuro e trasparente, è fondamental
 
 Per un annuncio efficace, prepara:
 1.  <b>Foto chiare:</b> Una foto d'insieme e foto dei dettagli più importanti.
-2.  <b>Un titolo descrittivo:</b> Es. "Stock di 20 libri di fantascienza" invece di "Vendo libri".
+2.  <b>Un titolo descrittivo:</b> Es. "Lotto di 20 libri di fantascienza" invece di "Vendo libri".
 3.  <b>Una descrizione onesta:</b> Specifica le condizioni degli oggetti, eventuali difetti e cosa è incluso nel lotto.
 4.  <b>La località:</b> La città o la zona dove si trovano gli oggetti.
 5.  <b>Il prezzo:</b> Un prezzo unico per l'intero lotto.
@@ -102,7 +103,11 @@ Per un annuncio efficace, prepara:
 
 Usa il comando /nuovo_annuncio per iniziare.
 """
-    await update.message.reply_text(testo_readme, parse_mode='HTML')
+    # Usiamo effective_chat per inviare il messaggio in modo sicuro
+    # sia da un comando diretto che da un callback di un pulsante.
+    await update.effective_chat.send_message(testo_readme, parse_mode='HTML')
+    
+    # Impostiamo il "visto di lettura" per questo utente
     context.user_data['has_read_readme'] = True
 # 🟧  ▓▓▓▒▒▒░░░ 
 
@@ -213,13 +218,13 @@ async def prova_fuori_tutorial(update: Update, context: ContextTypes.DEFAULT_TYP
 async def nuovo_annuncio(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Mostra il disclaimer e il pulsante di accettazione prima di creare un annuncio."""
     testo_dichiarazione = """
-Prima di iniziare, per favore, conferma di aver letto e compreso le nostre linee guida.
+Prima di iniziare, per favore, conferma di aver letto e compreso le nostre linee guida che puoi leggere avviando /readme.
 
 La tua responsabilità è fondamentale per mantenere la community un luogo affidabile.
 """
     keyboard = [
         [InlineKeyboardButton("✅ Dichiaro di aver letto il /readme", callback_data="accetta_readme")],
-        [InlineKeyboardButton("📖 Leggi o rileggi il /readme ora", callback_data="leggi_readme")]
+        [InlineKeyboardButton("📖 Leggi il /readme ora", callback_data="leggi_readme")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -248,12 +253,18 @@ async def accetta_readme(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return FOTO
 
 async def mostra_readme_da_accettazione(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Mostra il readme quando richiesto dal pulsante e non prosegue la conversazione."""
+    """Mostra il readme e termina la conversazione per evitare blocchi."""
     query = update.callback_query
     await query.answer()
-    await readme(update, context) # Chiama la funzione /readme esistente
-    # Non ritorna un nuovo stato per non proseguire la conversazione dell'annuncio
-    return
+    
+    # Modifica il messaggio originale per far capire che l'azione è stata ricevuta
+    await query.edit_message_text("Ecco le linee guida. Dopo averle lette, puoi ricominciare con /nuovo_annuncio quando vuoi.")
+
+    # Chiama la funzione /readme esistente per inviare il testo
+    await readme(update, context)
+    
+    # Termina la conversazione corrente per evitare che l'utente rimanga bloccato.
+    return ConversationHandler.END
     
 
 async def ricevi_foto(update: Update, context):
